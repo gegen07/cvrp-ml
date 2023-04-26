@@ -13,10 +13,10 @@ Try to approximate the total time traveled by each vehicle in Capacitated Vehicl
 
 - Download the `.pbf` file in [geofabrik.de](geofabrik.de)
 - Convert the `.osrm` file with osrm docker. This conversion extracts a graph with the hole street/highway networks of Brasil
+    - In this step, it was processed 75.358.579 vertexes and 78.914.994 arcs
 ```docker
 docker run -t -v "${PWD}:/data" osrm/osrm-backend osrm-extract -p /opt/car.lua /data/brazil-latest.osm.pbf
 ```
-    - In this step, it was processed 75.358.579 vertexes and 78.914.994 arcs
 - Do the graph spatial partitioning
 ```docker
 docker run -t -v "${PWD}:/data" osrm/osrm-backend osrm-partition /data/brazil-latest.osrm
