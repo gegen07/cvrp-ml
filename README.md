@@ -2,7 +2,7 @@
 Try to approximate the total time traveled by each vehicle in Capacitated Vehicle Routing Problem with Machine Learning using classic models. It can be used Reinforcement Learning as a baseline 
 
 ## Project
-- Engineer features like (mean, standard deviation, variance) of the graph distances. Besides that assigning how many districts a vehicle should drive to complete the tour.
+- Engineer features like (mean, standard deviation, variance) of the graph distances. Besides that assigning how many districts (mean, standard deviation) a vehicle should drive to complete the tour.
 - The project will use the data from [loggibud-challenge](https://github.com/loggi/loggibud). There are 90 feasible instances of cvrp for each district in Distrito Federal, Rio de Janeiro and Pará for training the ML models. Besides this train set, there are also a test set with 30 instances for the same districts explored in train set.
 
 ### First Steps
@@ -28,4 +28,13 @@ docker run -t -v $(pwd):/data osrm/osrm-backend:latest osrm-customize /data/braz
 - Deploy OSRM server using MLD (Multi-Level Dijkstra) algorithm
 ```docker
 docker run -t -i -p 5000:5000 -v $(pwd):/data -d osrm/osrm-backend:latest osrm-routed — algorithm mld /data/india-latest.osrm
+```
+
+### Running Server
+```
+docker run --rm -t -id \
+	--name osrm \
+	-p 5000:5000 \
+	-v "${PWD}:/data" \
+	osrm/osrm-backend osrm-routed --algorithm ch /data/brazil-latest.osrm --max-table-size 10000
 ```
