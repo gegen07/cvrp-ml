@@ -15,6 +15,7 @@ from distances import calculate_distance_matrix_m, OSRMConfig
 from classes import (
     CVRPInstance,
     CVRPSolution,
+    CVRPSeries,
     CVRPSolutionVehicle,
     JSONDataclassMixin,
 )
