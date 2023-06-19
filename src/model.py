@@ -118,6 +118,7 @@ def solve(
     # For more information about the type error:
     # https://developers.google.com/optimization/routing/routing_options
     if not assignment:
+        print("Problem is infeasible.")
         return None
 
     def extract_solution(vehicle_id):
@@ -141,7 +142,9 @@ def solve(
     ]
 
     # Return only routes that actually leave the depot.
-    return CVRPSolution(
+    print("solved")
+    solution = CVRPSolution(
         name=instance.name,
         vehicles=[v for v in routes if len(v.deliveries)],
     )
+    return solution
