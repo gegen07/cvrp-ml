@@ -36,5 +36,5 @@ docker run --rm -t -id \
 	--name osrm \
 	-p 5000:5000 \
 	-v "${PWD}:/data" \
-	osrm/osrm-backend osrm-routed --algorithm ch /data/brazil-latest.osrm --max-table-size 10000
+	osrm/osrm-backend osrm-routed --algorithm mld /data/brazil-latest.osrm --max-table-size 10000
 ```
