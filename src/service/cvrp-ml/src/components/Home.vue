@@ -37,7 +37,7 @@
               <v-col cols="4">
                   <v-file-input
                     label="Arquivo de Entrada"
-                    hide-details="true"
+                    hide-details="auto"
                     variant="solo-inverted"
                     type="file" id="file_model" ref="file_model"
                     v-on:change="handleFileUpload()"
@@ -78,7 +78,6 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     data(){
       return {
-        file: '',
         file_model: '',
         distance: 0
       }
@@ -89,7 +88,7 @@ export default defineComponent({
         let formData = new FormData();
             formData.append('file', this.file_model);
             console.log(this.file_model)
-            axios.post('http://localhost:8000/get-distance',
+            axios.post('http://34.125.189.210:8000/get-distance',
                 formData,
                 {
                 headers: {
@@ -106,7 +105,7 @@ export default defineComponent({
       },
 
       handleFileUpload(){
-        this.file_model = this.$refs.file_model.files[0];
+        this.file_model = (this.$refs.file_model as any).files[0];
       }
     }
 });
