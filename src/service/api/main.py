@@ -12,9 +12,11 @@ import matplotlib.pyplot as plt
 import h3
 import warnings
 warnings.simplefilter(action='ignore', category=pandas.errors.PerformanceWarning)
+from flask_cors import CORS
+from flask_cors import cross_origin
 
 app = Flask(__name__)
-
+CORS(app)
 
 UPLOAD_FOLDER = './files'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -102,11 +104,15 @@ def predict(file):
 
 
 @app.route('/get-distance', methods = ['POST']) 
-def success():  
+@cross_origin()
+def get_distance():  
     if request.method == 'POST':  
         f = request.files['file']
 
         if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], f.filename)):
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
-
-        return jsonify({'distance': predict(f.filename)})   
+        response = jsonify({'distance': predict(f.filename)})   
+        return response
+    
+if __name__ == '__main__':
+    app.run(host="127.0.0.1", port="8000", debug = True)
