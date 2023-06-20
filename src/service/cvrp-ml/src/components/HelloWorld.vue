@@ -115,7 +115,7 @@ export default defineComponent({
             let formData = new FormData();
             formData.append('file', this.file);
             console.log(this.file)
-            axios.post( '/single-file',
+            axios.post('/retrain-model',
                 formData,
                 {
                 headers: {
@@ -134,16 +134,17 @@ export default defineComponent({
         let formData = new FormData();
             formData.append('file', this.file_model);
             console.log(this.file_model)
-            axios.post( '/single-file',
+            axios.post('http://localhost:8000/get-distance',
                 formData,
                 {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+                  'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+                  'Content-Type': 'multipart/form-data'
                 }
               }
-            ).then(function(){
-          console.log('SUCCESS!!');
-        })
+            ).then(response => this.distance = response.data.distance)
         .catch(function(){
           console.log('FAILURE!!');
         });
