@@ -74,6 +74,20 @@ def generate_instance_df(instance, area, distance_matrix, map_dd_cells):
         for j in range(len(stats_list)):
             df[f"{columns[i]}_{stats_list[j]}"] = stat_censo.iloc[j, i]
 
+    demands = []
+
+    size_stat = pandas.DataFrame()
+    stat = instance["size"].agg(["mean", "std", "median", "max", "min", "var"]).reset_index()
+    stats_list = ["mean", "std", "median", "max", "min", "var"]
+    stats_columns = stat.columns.tolist()
+    for i in range(1, len(stats_columns)):
+        for j in range(len(stats_list)):
+            size_stat.loc[i, f"demand_{stats_list[j]}"] = stat.iloc[j, i]
+    demands.append(size_stat)
+
+    demands_df = pandas.concat(demands).reset_index(drop=True)
+    df = pandas.concat([df, demands_df], axis=1)
+
     return df
 
 def pipeline_preprocessing(file):

@@ -70,6 +70,20 @@ def generate_instance_df(instance, area, distance_matrix, map_dd_cells):
         for j in range(len(stats_list)):
             df[f"{columns[i]}_{stats_list[j]}"] = stat_censo.iloc[j, i]
 
+    demands = []
+
+    size_stat = pandas.DataFrame()
+    stat = instance["size"].agg(["mean", "std", "median", "max", "min", "var"]).reset_index()
+    stats_list = ["mean", "std", "median", "max", "min", "var"]
+    stats_columns = stat.columns.tolist()
+    for i in range(1, len(stats_columns)):
+        for j in range(len(stats_list)):
+            size_stat.loc[i, f"demand_{stats_list[j]}"] = stat.iloc[j, i]
+    demands.append(size_stat)
+
+    demands_df = pandas.concat(demands).reset_index(drop=True)
+    df = pandas.concat([df, demands_df], axis=1)
+    
     return df
 
 if __name__ == "__main__":
@@ -94,13 +108,12 @@ if __name__ == "__main__":
 
 
     dfs = []
-    for i in range(0, 500):
-        print(i)
-        instance = CVRPSeries.from_file(os.path.join(base_dir, f"pa-3/cvrp-1-pa-{i}.json"))
+    for i in range(0, 1):
+        instance = CVRPSeries.from_file(os.path.join(base_dir, f"pa-0/cvrp-0-pa-{i}.json"))
         gdf = instance.to_gdf()
 
-
         train_df = generate_instance_df(gdf, pa_area, distance_matrix, map_dd_cells)
+        print(train_df.columns)
 
         # Get mean distance per vehicle (target metric)
         instance = CVRPInstance.from_file(os.path.join(base_dir, f"pa-3/cvrp-1-pa-{i}.json"))
