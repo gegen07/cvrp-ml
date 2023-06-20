@@ -75,7 +75,7 @@ def generate_instance_df(instance, area, distance_matrix, map_dd_cells):
 if __name__ == "__main__":
     # all_gdf = []
 
-    base_dir = "../data/cvrp-instances-1.0/dev/"
+    base_dir = "../data/cvrp-instances-1.0/train/"
 
     pa_area = pandas.read_csv("/media/gegen07/Expansion/data/pa_interpolated_res_6_interest.csv")
 
@@ -94,16 +94,16 @@ if __name__ == "__main__":
 
 
     dfs = []
-    for i in range(90, 30+90):
+    for i in range(0, 500):
         print(i)
-        instance = CVRPSeries.from_file(os.path.join(base_dir, f"pa-0/cvrp-0-pa-{i}.json"))
+        instance = CVRPSeries.from_file(os.path.join(base_dir, f"pa-3/cvrp-1-pa-{i}.json"))
         gdf = instance.to_gdf()
 
 
         train_df = generate_instance_df(gdf, pa_area, distance_matrix, map_dd_cells)
 
         # Get mean distance per vehicle (target metric)
-        instance = CVRPInstance.from_file(os.path.join(base_dir, f"pa-0/cvrp-0-pa-{i}.json"))
+        instance = CVRPInstance.from_file(os.path.join(base_dir, f"pa-3/cvrp-1-pa-{i}.json"))
 
         solution: CVRPSolution = solve(instance, ORToolsParams())
         total = 0
@@ -123,4 +123,4 @@ if __name__ == "__main__":
         else:
             print("infeasible")
     train_df = pandas.concat(dfs)
-    train_df.to_csv(os.path.join(base_dir, "cvrp-0-pa-test.csv"), index=False)
+    train_df.to_csv(os.path.join(base_dir, "cvrp-0-500-pa-train.csv"), index=False)
